@@ -1,0 +1,4 @@
+sceptre==1.4.2
+zappa==0.47.0
+Flask==1.0.2
+requests==2.20.0

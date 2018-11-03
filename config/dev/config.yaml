@@ -1,0 +1,4 @@
+project_code: neptune-dev
+region: us-east-1
+template_bucket_name: test-graph-neptune
+template_key_prefix: master-templates

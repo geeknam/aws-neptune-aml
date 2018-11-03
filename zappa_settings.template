@@ -1,0 +1,24 @@
+---
+dev:
+  project_name: neptune-api
+  aws_region: us-east-1
+  timeout_seconds: 30
+  s3_bucket: neptune-api-dev
+  app_function: api.app
+  keep_warm: false
+  log_level: INFO
+  num_retained_versions: 2
+  vpc_config:
+    SubnetIds:
+    - $PublicSubnet1
+    - $PublicSubnet2
+    - $PublicSubnet3
+    SecurityGroupIds:
+    - $NeptuneSG
+  extra_permissions:
+  - Effect: Allow
+    Action:
+    - neptune:*
+    Resource: "*"
+  environment_variables:
+    GREMLIN_HTTP: $GremlinEndpoint

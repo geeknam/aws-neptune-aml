@@ -1,0 +1,9 @@
+template_path: templates/neptune.yaml
+parameters:
+  Env: dev
+  VPC: !stack_output dev/vpc::VPC
+  SubnetIds:
+    - !stack_output dev/vpc::PublicSubnet1
+    - !stack_output dev/vpc::PublicSubnet2
+    - !stack_output dev/vpc::PublicSubnet3
+  NeptuneSG: !stack_output dev/vpc::NeptuneSG

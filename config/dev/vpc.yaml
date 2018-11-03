@@ -1,0 +1,3 @@
+template_path: templates/vpc.yaml
+parameters:
+  Env: dev
