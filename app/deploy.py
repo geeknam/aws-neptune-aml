@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 from string import Template
 import boto3

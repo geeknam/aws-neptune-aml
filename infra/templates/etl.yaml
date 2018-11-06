@@ -1,0 +1,92 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Template to create a simple s3 bucket
+
+Parameters:
+
+  BucketName:
+    Description: Name of S3 bucket for ETL
+    Type: String
+  GlueDatabaseName:
+    Description: Name of Glue Database
+    Type: String
+  GlueJobName:
+    Description: Name of Glue Job
+    Type: String
+
+
+Resources:
+  Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: BucketOwnerFullControl
+      BucketName: !Ref BucketName
+
+  GlueDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      DatabaseInput:
+        Name: !Ref GlueDatabaseName
+      CatalogId: !Ref AWS::AccountId
+
+  GlueJobRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "glue.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        -
+          PolicyName: "root"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action: "*"
+                Resource: "*"
+
+  GlueCrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Role: !GetAtt GlueJobRole.Arn
+      Description: Crawler to populate AML DB table
+      DatabaseName: !Ref GlueDatabaseName
+      Targets:
+        S3Targets:
+        -
+          Path: !Sub "s3://${BucketName}/raw_data"
+      Name: aml-graph-crawler
+
+
+  GlueJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Command:
+        Name: glueetl
+        ScriptLocation: !Sub "s3://${BucketName}/glue-scripts/glue_etl.py"
+      DefaultArguments:
+        "--job-bookmark-option": "job-bookmark-enable"
+      ExecutionProperty:
+        MaxConcurrentRuns: 2
+      MaxRetries: 0
+      Name: !Ref GlueJobName
+      Role: !Ref GlueJobRole
+
+Outputs:
+  BucketName:
+    Description: Name of the bucket
+    Value: !Ref BucketName
+
+
+
+
+

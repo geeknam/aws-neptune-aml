@@ -1,3 +1,4 @@
 data/*.zip
+data/*.gz
 data/*.csv
 app/zappa_settings.yml
