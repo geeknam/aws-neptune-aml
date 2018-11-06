@@ -14,8 +14,8 @@ job_args = getResolvedOptions(sys.argv, [
     's3-bucket-name'
 ])
 # Data Catalog: database and table name
-db_name = job_args['glue-db-name']
-tbl_name = job_args['glue-table-name']
+db_name = job_args['glue_db_name']
+tbl_name = job_args['glue_table_name']
 
 
 # Read data into a DynamicFrame using the Data Catalog metadata
@@ -35,7 +35,7 @@ accounts = all_account_df\
 accounts_dyf = DynamicFrame.fromDF(accounts, glueContext, "accounts")
 
 # S3 location for output
-output_dir = "s3://%s/transformed/vertex-accounts" % job_args['s3-bucket-name']
+output_dir = "s3://%s/transformed/vertex-accounts" % job_args['s3_bucket_name']
 glueContext.write_dynamic_frame.from_options(
     frame=accounts_dyf,
     connection_type="s3",
