@@ -29,7 +29,7 @@ dest_account_df = df.select('namedest').distinct()
 all_account_df = orig_account_df.union(dest_account_df).distinct()
 
 accounts = all_account_df\
-    .withColumnRenamed('nameOrig', '~id')\
+    .withColumnRenamed('nameorig', '~id')\
     .withColumn('~label', lit('ACCOUNT'))
 
 accounts_dyf = DynamicFrame.fromDF(accounts, glueContext, "accounts")
@@ -37,7 +37,7 @@ accounts_dyf = DynamicFrame.fromDF(accounts, glueContext, "accounts")
 # S3 location for output
 output_dir = "s3://%s/transformed/vertex-accounts" % job_args['s3-bucket-name']
 glueContext.write_dynamic_frame.from_options(
-    frame=accounts,
+    frame=accounts_dyf,
     connection_type="s3",
     connection_options={"path": output_dir},
     format="csv"
