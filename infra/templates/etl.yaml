@@ -74,7 +74,9 @@ Resources:
         Name: glueetl
         ScriptLocation: !Sub "s3://${BucketName}/glue-scripts/glue_etl.py"
       DefaultArguments:
-        "--job-bookmark-option": "job-bookmark-enable"
+        "--glue-db-name": !Ref GlueDatabaseName
+        "--glue-table-name": raw_data
+        "--s3-bucket-name":  !Ref BucketName
       ExecutionProperty:
         MaxConcurrentRuns: 2
       MaxRetries: 0

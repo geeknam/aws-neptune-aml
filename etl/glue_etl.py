@@ -1,13 +1,21 @@
+import sys
+
 from pyspark.context import SparkContext
 from awsglue.context import GlueContext
+from awsglue.utils import getResolvedOptions
 from awsglue.dynamicframe import DynamicFrame
 from pyspark.sql.functions import lit
 
 glueContext = GlueContext(SparkContext.getOrCreate())
 
+job_args = getResolvedOptions(sys.argv, [
+    'glue-db-name',
+    'glue-table-name',
+    's3-bucket-name'
+])
 # Data Catalog: database and table name
-db_name = "aml-db"
-tbl_name = "raw_data"
+db_name = job_args['glue-db-name']
+tbl_name = job_args['glue-table-name']
 
 
 # Read data into a DynamicFrame using the Data Catalog metadata
@@ -27,7 +35,7 @@ accounts = all_account_df\
 accounts_dyf = DynamicFrame.fromDF(accounts, glueContext, "accounts")
 
 # S3 location for output
-output_dir = "s3://neptune-aws-aml-data/transformed"
+output_dir = "s3://%s/transformed/vertex-accounts" % job_args['s3-bucket-name']
 glueContext.write_dynamic_frame.from_options(
     frame=accounts,
     connection_type="s3",
