@@ -21,4 +21,6 @@ dev:
     - neptune:*
     Resource: "*"
   environment_variables:
-    GREMLIN_HTTP: $GremlinEndpoint
+    GREMLIN_ENDPOINT: $GremlinEndpoint
+    NEPTUNE_LOADER_ENDPOINT: $LoaderEndpoint
+    S3_LOADER_ROLE: $NeptuneLoadFromS3IAMRoleArn

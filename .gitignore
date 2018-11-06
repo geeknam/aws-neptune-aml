@@ -1,0 +1,3 @@
+data/*.zip
+data/*.csv
+app/zappa_settings.yml
