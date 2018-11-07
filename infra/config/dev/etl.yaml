@@ -3,3 +3,4 @@ parameters:
   BucketName: neptune-aws-aml-data
   GlueDatabaseName: aml-db
   GlueJobName: aml-etl-job
+  GlueCrawlerName: aml-graph-crawler

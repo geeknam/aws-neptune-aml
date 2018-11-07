@@ -13,6 +13,9 @@ Parameters:
   GlueJobName:
     Description: Name of Glue Job
     Type: String
+  GlueCrawlerName:
+    Description: Name of Glue Crawler
+    Type: String
 
 
 Resources:
@@ -64,7 +67,7 @@ Resources:
         S3Targets:
         -
           Path: !Sub "s3://${BucketName}/raw_data"
-      Name: aml-graph-crawler
+      Name: !Ref GlueCrawlerName
 
 
   GlueJob:
@@ -87,8 +90,14 @@ Outputs:
   BucketName:
     Description: Name of the bucket
     Value: !Ref BucketName
-
-
-
+  GlueDatabaseName:
+    Description: Name of Glue Database
+    Value: !Ref GlueDatabaseName
+  GlueJobName:
+    Description: Name of Glue Job
+    Value: !Ref GlueJobName
+  GlueCrawlerName:
+    Description: Name of Glue Crawler
+    Value: !Ref GlueCrawlerName
 
 

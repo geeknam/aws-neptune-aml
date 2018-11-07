@@ -15,6 +15,7 @@ CFN_OUTPUTS = {}
 STACKS = (
     'neptune-dev-dev-vpc',
     'neptune-dev-dev-neptune',
+    'neptune-dev-dev-etl',
 )
 
 for stack in STACKS:

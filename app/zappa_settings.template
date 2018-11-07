@@ -20,7 +20,24 @@ dev:
     Action:
     - neptune:*
     Resource: "*"
+  events:
+  -
+    function: events.s3.file_received
+    event_source:
+      arn: arn:aws:s3:::$BucketName
+      key_filters:
+      -
+        type: prefix
+        value: "raw_data"
+      -
+        type: suffix
+        value: ".gz"
+    events:
+    -
+      s3:ObjectCreated:*
   environment_variables:
     GREMLIN_ENDPOINT: $GremlinEndpoint
     NEPTUNE_LOADER_ENDPOINT: $LoaderEndpoint
     S3_LOADER_ROLE: $NeptuneLoadFromS3IAMRoleArn
+    GLUE_CRAWLER_NAME: $GlueCrawlerName
+    GLUE_JOB_NAME: $GlueJobName
