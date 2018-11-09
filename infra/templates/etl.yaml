@@ -86,6 +86,43 @@ Resources:
       Name: !Ref GlueJobName
       Role: !Ref GlueJobRole
 
+  GlueJobSucceededTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: GlueJobSucceededTopic
+      TopicName: GlueJobSucceededTopic
+
+  GlueJobSucceededTopicPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: sns:Publish
+            Resource: '*'
+      Topics:
+        - !Ref GlueJobSucceededTopic
+
+  JobSucceededEventRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: "Event for when Glue Job state is success"
+      EventPattern:
+        source:
+          - "aws.glue"
+        detail-type:
+          - "Glue Job State Change"
+        detail:
+          state:
+            - "SUCCEEDED"
+      State: "ENABLED"
+      Targets:
+        -
+          Arn: !Ref GlueJobSucceededTopic
+          Id: GlueJobSucceededTopic
+
 Outputs:
   BucketName:
     Description: Name of the bucket
@@ -99,5 +136,9 @@ Outputs:
   GlueCrawlerName:
     Description: Name of Glue Crawler
     Value: !Ref GlueCrawlerName
-
-
+  AWSAccountId:
+    Description: AWS Account Id
+    Value: !Ref AWS::AccountId
+  GlueJobSucceededTopic:
+    Description: Arn of SNS Topic which notifies the success of Glue Job
+    Value: !Ref GlueJobSucceededTopic

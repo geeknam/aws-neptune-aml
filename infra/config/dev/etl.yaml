@@ -1,6 +1,6 @@
 template_path: templates/etl.yaml
 parameters:
-  BucketName: neptune-aws-aml-data
+  BucketName: neptune-aws-aml-data-dev
   GlueDatabaseName: aml-db
   GlueJobName: aml-etl-job
   GlueCrawlerName: aml-graph-crawler
