@@ -20,6 +20,34 @@ dev:
     Action:
     - neptune:*
     Resource: "*"
+  environment_variables:
+    GREMLIN_ENDPOINT: $GremlinEndpoint
+    NEPTUNE_LOADER_ENDPOINT: $LoaderEndpoint
+    S3_LOADER_ROLE: $NeptuneLoadFromS3IAMRoleArn
+
+event_dev:
+  project_name: neptune-event
+  apigateway_enabled: false
+  aws_region: us-east-1
+  timeout_seconds: 30
+  s3_bucket: neptune-api-dev
+  app_function: api.app
+  keep_warm: false
+  log_level: INFO
+  num_retained_versions: 2
+  extra_permissions:
+  - Effect: Allow
+    Action:
+    - neptune:*
+    Resource: "*"
+  - Effect: Allow
+    Action:
+    - glue:*
+    Resource: "*"
+  - Effect: Allow
+    Action:
+    - s3:*
+    Resource: "*"
   events:
   -
     function: events.s3.file_received
@@ -32,12 +60,12 @@ dev:
       -
         type: suffix
         value: ".gz"
-    events:
-    -
-      s3:ObjectCreated:*
+      events:
+      -
+        s3:ObjectCreated:*
   environment_variables:
-    GREMLIN_ENDPOINT: $GremlinEndpoint
     NEPTUNE_LOADER_ENDPOINT: $LoaderEndpoint
     S3_LOADER_ROLE: $NeptuneLoadFromS3IAMRoleArn
     GLUE_CRAWLER_NAME: $GlueCrawlerName
     GLUE_JOB_NAME: $GlueJobName
+    S3_DATA_BUCKET_NAME: $BucketName

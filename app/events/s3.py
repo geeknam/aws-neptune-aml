@@ -8,7 +8,6 @@ GLUE_CRAWLER_NAME = os.getenv('GLUE_CRAWLER_NAME', 'aml-graph-crawler')
 GLUE_JOB_NAME = os.getenv('GLUE_JOB_NAME', 'aml-etl-job')
 
 
-s3_client = boto3.client('s3')
 glue_client = boto3.client('glue')
 
 
