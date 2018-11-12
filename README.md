@@ -12,3 +12,9 @@ Project Structure
 - data: data source, data collection
 - etl: ETL code running on AWS Glue
 - infra: Infrastructure as Code to spin up all resources in AWS using Cloudformation
+
+
+Event Driven ETL Architecture
+====================================
+
+![AWS Neptune Diagram](/neptune-event-driven.png?raw=true "Event Driven ETL Architecture")
